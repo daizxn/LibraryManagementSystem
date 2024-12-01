@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>image/book.svg</file>
+        <file>image/user.svg</file>
+        <file>image/history.svg</file>
+        <file>image/search.svg</file>
+    </qresource>
+    <qresource prefix="/account">
+        <file>account/admin.json</file>
+    </qresource>
+
+</RCC>
