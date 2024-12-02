@@ -35,7 +35,7 @@ public:
     void set(const QString &username, const QString &password);
 
     //operator overload
-    friend bool operator==(const user &lhs, const user &rhs);
+    friend bool operator==(const User &lhs, const User &rhs);
 };
 
 
