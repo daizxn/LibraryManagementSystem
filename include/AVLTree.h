@@ -31,6 +31,8 @@ private:
 
     int getBalanceFactor(Node *node); //获取节点平衡因子
 
+    Node *getMinNode(Node *node); //获取最小节点
+
     Node *leftRotate(Node *node); //左旋
 
     Node *rightRotate(Node *node); //右旋
@@ -67,6 +69,14 @@ void AVLTree<T1, T2>::updateHeight(Node *node) {
 template<typename T1, typename T2>
 int AVLTree<T1, T2>::getBalanceFactor(Node *node) {
     return getHeight(node->left) - getHeight(node->right);
+}
+
+template<typename T1, typename T2>
+typename AVLTree<T1, T2>::Node *AVLTree<T1, T2>::getMinNode(Node *node) {
+    while (node->left) {
+        node = node->left;
+    }
+    return node;
 }
 
 template<typename T1, typename T2>
@@ -160,6 +170,7 @@ typename AVLTree<T1, T2>::Node *AVLTree<T1, T2>::remove(Node *node, const T1 &ke
             // 当前节点有两个子节点，找右子树的最小节点
             Node *temp = getMinNode(node->right);
             node->key = temp->key; // 用右子树最小节点替换当前节点的键值
+            node->data = temp->data; // 用右子树最小节点替换当前节点的数据
             node->right = remove(node->right, temp->key); // 删除右子树中的最小节点
         }
     }
