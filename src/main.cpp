@@ -4,6 +4,7 @@
 #include "admin.h"
 #include "book.h"
 #include "AVLTree.h"
+#include "list.h"
 
 int main(int argc, char *argv[]) {
     Book b;

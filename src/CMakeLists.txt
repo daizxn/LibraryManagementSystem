@@ -1,4 +1,3 @@
-
 # Set binary and project name
 set(BIN_NAME ${CMAKE_PROJECT_NAME})
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
