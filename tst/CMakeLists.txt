@@ -1,4 +1,5 @@
 set(BIN_NAME ${CMAKE_PROJECT_NAME})
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 add_executable(${BIN_NAME}_tst AVLTreeTests.cpp main.cpp)
 
