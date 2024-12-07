@@ -1,0 +1,24 @@
+//
+// Created by dai on 24-12-3.
+//
+
+#ifndef BORROWINFOENUM_H
+#define BORROWINFOENUM_H
+
+#include <QString>
+
+enum BorrowInfoEnum
+{
+    BORROWINFO_ID = 0,
+    BORROWINFO_BOOKID,
+    BORROWINFO_USERID,
+    BORROWINFO_BORROWDATE,
+    BORROWINFO_RETURNDATE,
+    BORROWINFO_ISRETURNED,
+    BORROWINFO_ENUM_COUNT
+};
+
+extern const QString BorrowInfoEnumString[BORROWINFO_ENUM_COUNT];
+
+
+#endif //BORROWINFOENUM_H
