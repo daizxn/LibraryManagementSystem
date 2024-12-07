@@ -6,7 +6,6 @@
 
 
 const QString AdminEnumString[ADMIN_ENUM_COUNT] = {
-    "ID",
     "Name",
     "Password"
 };

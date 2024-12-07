@@ -6,9 +6,8 @@
 
 
 const QString BookEnumString[BOOK_ENUM_COUNT] = {
-    "ID",
-    "Name",
-    "Author",
-    "ISBN",
-    "IsBorrowed"
+    "name",
+    "author",
+    "isbn",
+    "isBorrowed"
 };

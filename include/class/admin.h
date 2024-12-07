@@ -16,15 +16,19 @@ private:
 public:
     Admin();
 
-    Admin(int id,const QString& username, const QString& password);
+    Admin(int id, const QString& username, const QString& password);
 
     [[nodiscard]] int getId() const;
 
     void setId(int id);
 
-    [[nodiscard]] QString getInfo(AdminEnum index) const;
+    [[nodiscard]]  QString getInfo(AdminEnum index) const;
 
-    void setInfo(AdminEnum index, const QString& info);
+    void setInfo(int index, const QString& info);
+
+    static AdminEnum getEnumIndex(const QString& str);
+
+    [[nodiscard]] static AdminEnum getEnumCount();
 
     friend bool operator==(const Admin& lhs, const Admin& rhs);
 };

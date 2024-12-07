@@ -8,5 +8,8 @@
     <qresource prefix="/account">
         <file>account/admin.json</file>
     </qresource>
+    <qresource prefix="/book">
+        <file>book/bookInfo.json</file>
+    </qresource>
 
 </RCC>

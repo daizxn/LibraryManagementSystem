@@ -7,9 +7,9 @@
 
 #include <QString>
 
-enum AdminEnum {
-    ADMIN_ID = 0,
-    ADMIN_NAME,
+enum AdminEnum
+{
+    ADMIN_NAME = 0,
     ADMIN_PASSWORD,
     ADMIN_ENUM_COUNT
 };

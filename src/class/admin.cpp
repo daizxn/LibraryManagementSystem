@@ -18,12 +18,18 @@ Admin::Admin(const int id, const QString& username, const QString& password)
     this->info[AdminEnum::ADMIN_PASSWORD] = password;
 }
 
+int Admin::getId() const
+{
+    return this->id;
+}
+
+
 QString Admin::getInfo(AdminEnum index) const
 {
     return this->info[index];
 }
 
-void Admin::setInfo(AdminEnum index, const QString& info)
+void Admin::setInfo(int index, const QString& info)
 {
     this->info[index] = info;
 }
@@ -32,4 +38,21 @@ bool operator==(const Admin& lhs, const Admin& rhs)
 {
     return lhs.info[AdminEnum::ADMIN_NAME] == rhs.info[AdminEnum::ADMIN_NAME] && lhs.info[AdminEnum::ADMIN_PASSWORD] ==
         rhs.info[AdminEnum::ADMIN_PASSWORD];
+}
+
+AdminEnum Admin::getEnumIndex(const QString& str)
+{
+    for (int i = 0; i < AdminEnum::ADMIN_ENUM_COUNT; i++)
+    {
+        if (AdminEnumString[i] == str)
+        {
+            return static_cast<AdminEnum>(i);
+        }
+    }
+    return AdminEnum::ADMIN_ENUM_COUNT;
+}
+
+AdminEnum Admin::getEnumCount()
+{
+    return AdminEnum::ADMIN_ENUM_COUNT;
 }

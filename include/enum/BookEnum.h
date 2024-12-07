@@ -7,9 +7,9 @@
 
 #include <QString>
 
-enum BookEnum {
-    BOOK_ID = 0,
-    BOOK_NAME,
+enum BookEnum
+{
+    BOOK_NAME = 0,
     BOOK_AUTHOR,
     BOOK_ISBN,
     BOOK_ISBORROWED,

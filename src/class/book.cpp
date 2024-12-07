@@ -6,18 +6,30 @@
 
 Book::Book() {
     this->id = -1;
-    this->name = "null";
-    this->author = "null";
-    this->isbn = "null";
-    this->isBorrowed = false;
+    for (auto i : this->info) {
+        i = "null";
+    }
 }
+
+Book::Book(QJsonObject obj)
+{
+    this->id=obj["id"].toInt();
+    this->info[BookEnum::BOOK_NAME]=obj["name"].toString();
+    this->info[BookEnum::BOOK_AUTHOR]=obj["author"].toString();
+    this->info[BookEnum::BOOK_ISBN]=obj["isbn"].toString();
+    this->info[BookEnum::BOOK_ISBORROWED]=obj["isBorrowed"].toBool()?"true":"false";
+
+
+}
+
 
 Book::Book(int id, const QString &name, const QString &author, const QString &isbn, bool isBorrowed) {
     this->id = id;
-    this->name = name;
-    this->author = author;
-    this->isbn = isbn;
-    this->isBorrowed = isBorrowed;
+    this->info[BookEnum::BOOK_NAME] = name;
+    this->info[BookEnum::BOOK_AUTHOR] = author;
+    this->info[BookEnum::BOOK_ISBN] = isbn;
+    this->info[BookEnum::BOOK_ISBORROWED] = isBorrowed ? "true" : "false";
+
 }
 
 int Book::getId() const {
@@ -28,46 +40,23 @@ void Book::setId(int id) {
     this->id = id;
 }
 
-const QString &Book::getName() const {
-    return this->name;
+QString Book::getInfo(int index) const
+{
+    return this->info[index];
 }
-
-void Book::setName(const QString &name) {
-    this->name = name;
-}
-
-const QString &Book::getAuthor() const {
-    return this->author;
-}
-
-void Book::setAuthor(const QString &author) {
-    this->author = author;
-}
-
-const QString &Book::getIsbn() const {
-    return this->isbn;
-}
-
-void Book::setIsbn(const QString &isbn) {
-    this->isbn = isbn;
-}
-
-bool Book::getIsBorrowed() const {
-    return this->isBorrowed;
-}
-
-void Book::setIsBorrowed(bool isBorrowed) {
-    this->isBorrowed = isBorrowed;
-}
-
-void Book::set(const QString &name, const QString &author, const QString &isbn, bool isBorrowed) {
-    this->name = name;
-    this->author = author;
-    this->isbn = isbn;
-    this->isBorrowed = isBorrowed;
+void Book::setInfo(BookEnum index, const QString &info)  {
+     this->info[index]=info;
 }
 
 bool operator==(const Book &lhs, const Book &rhs) {
-    return lhs.id == rhs.id && lhs.name == rhs.name && lhs.author == rhs.author && lhs.isbn == rhs.isbn;
+    if (lhs.id != rhs.id) {
+        return false;
+    }
+    for (int i = 0; i < BookEnum::BOOK_ENUM_COUNT; i++) {
+        if (lhs.info[i] != rhs.info[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
