@@ -2,7 +2,7 @@
 // Created by dai on 24-12-3.
 //
 #include <gtest/gtest.h>
-#include "list.h"
+#include "data/list.h"
 
 TEST(LinkedListTests, InsertSingleNode) {
     list::LinkedList<int> linkedList;

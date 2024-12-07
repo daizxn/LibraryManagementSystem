@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "AVLTree.h"
+#include "data/AVLTree.h"
 
 TEST(AVLTreeTests, InsertAndSearchLargeNumberOfNodes) {
     AVLTree<int, std::string> tree;

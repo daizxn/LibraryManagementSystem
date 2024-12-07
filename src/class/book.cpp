@@ -2,7 +2,7 @@
 // Created by dai on 24-12-1.
 //
 
-#include "book.h"
+#include "class/book.h"
 
 Book::Book() {
     this->id = -1;

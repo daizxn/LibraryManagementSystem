@@ -2,7 +2,7 @@
 // Created by dai on 24-12-1.
 //
 
-#include "borrowInfo.h"
+#include "class/borrowInfo.h"
 
 BorrowInfo::BorrowInfo() {
     this->id = -1;

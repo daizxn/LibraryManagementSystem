@@ -3,7 +3,7 @@
 //
 
 // You may need to build the project (run Qt uic code generator) to get "ui_Login.h" resolved
-#include "admin.h"
+#include "class/admin.h"
 #include "login.h"
 #include "Forms/ui_login.h"
 
@@ -32,8 +32,8 @@ void Login::login() {
     QString password = ui->lgPassword->text();
 
     Admin inputAccount;
-    inputAccount.setUsername(username);
-    inputAccount.setPassword(password);
+    inputAccount.setInfo(AdminEnum::ADMIN_NAME,username);
+    inputAccount.setInfo(AdminEnum::ADMIN_PASSWORD,password);
 
     if (inputAccount == *admin) {
         //QMessageBox::information(this, "Login", "Login successful");
@@ -78,6 +78,6 @@ void Login::initLogin() {
         return;
     }
     QJsonObject adminObj = adminDoc.object();
-    this->admin = new Admin(adminObj["username"].toString(), adminObj["password"].toString());
+    this->admin = new Admin(adminObj["id"].toInt(),adminObj["username"].toString(), adminObj["password"].toString());
 //    qDebug() << admin->getUsername() << admin->getPassword();
 }

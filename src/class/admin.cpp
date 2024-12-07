@@ -2,34 +2,34 @@
 // Created by dai on 24-11-29.
 //
 
-#include "admin.h"
+#include "class/admin.h"
 
-Admin::Admin() {
-    this->username = "";
-    this->password = "";
+Admin::Admin()
+{
+    id = -1;
+    this->info[AdminEnum::ADMIN_NAME] = "";
+    this->info[AdminEnum::ADMIN_PASSWORD] = "";
 }
 
-Admin::Admin(const QString &username, const QString &password) {
-    this->username = username;
-    this->password = password;
+Admin::Admin(const int id, const QString& username, const QString& password)
+{
+    this->id = id;
+    this->info[AdminEnum::ADMIN_NAME] = username;
+    this->info[AdminEnum::ADMIN_PASSWORD] = password;
 }
 
-QString Admin::getUsername() const {
-    return this->username;
+QString Admin::getInfo(AdminEnum index) const
+{
+    return this->info[index];
 }
 
-void Admin::setUsername(const QString &username) {
-    this->username = username;
+void Admin::setInfo(AdminEnum index, const QString& info)
+{
+    this->info[index] = info;
 }
 
-QString Admin::getPassword() const {
-    return this->password;
-}
-
-void Admin::setPassword(const QString &password) {
-    this->password = password;
-}
-
-bool operator==(const Admin &lhs, const Admin &rhs) {
-    return lhs.username == rhs.username && lhs.password == rhs.password;
+bool operator==(const Admin& lhs, const Admin& rhs)
+{
+    return lhs.info[AdminEnum::ADMIN_NAME] == rhs.info[AdminEnum::ADMIN_NAME] && lhs.info[AdminEnum::ADMIN_PASSWORD] ==
+        rhs.info[AdminEnum::ADMIN_PASSWORD];
 }

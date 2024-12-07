@@ -1,10 +1,10 @@
 #include <QApplication>
 #include "mainwindow.h"
 #include "login.h"
-#include "admin.h"
-#include "book.h"
-#include "AVLTree.h"
-#include "list.h"
+#include "class/admin.h"
+#include "class/book.h"
+#include "data/AVLTree.h"
+#include "data/list.h"
 
 int main(int argc, char *argv[]) {
     Book b;

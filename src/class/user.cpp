@@ -2,7 +2,7 @@
 // Created by dai on 24-12-1.
 //
 
-#include "user.h"
+#include "class/user.h"
 
 User::User() {
     this->id = -1;

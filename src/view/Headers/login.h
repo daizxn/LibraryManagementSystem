@@ -6,7 +6,7 @@
 #define LOGIN_H
 
 #include <QDialog>
-#include "admin.h"
+#include "class/admin.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Login; }
