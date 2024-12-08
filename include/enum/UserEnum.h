@@ -10,8 +10,7 @@
 
 enum UserEnum
 {
-    USER_ID = 0,
-    USER_NAME,
+    USER_NAME=0,
     USER_PASSWORD,
     USER_ENUM_COUNT
 };

@@ -22,7 +22,7 @@ private:
     std::multimap<QString, int>* reverseLookup; // 根据其他字段反查多个id
 
 public:
-    DataSet(const QString& filePath, const int infoCount);
+    DataSet(const QString& filePath, int infoCount);
 
     void insert(const T& data);
 
@@ -34,11 +34,13 @@ public:
 
     //void updateByField(int field, const QString& value, const T& data);
 
-
     T* getById(int id);
-    std::vector<int> getIdsByField(int field, const QString& value) const; // 查找所有匹配的id
+
+    [[nodiscard]] std::vector<int> getIdsByField(int field, const QString& value) const; // 查找所有匹配的id
 
     QList<T> getByField(int field, const QString& value);
+
+    QList<T> getAll() const;
 };
 
 template <typename T>
@@ -114,11 +116,12 @@ std::vector<int> DataSet<T>::getIdsByField(const int field, const QString& value
 }
 
 template <typename T>
-QList<T> DataSet<T>:: getByField(int field, const QString& value)
+QList<T> DataSet<T>::getByField(const int field, const QString& value)
 {
     std::vector<int> ids = getIdsByField(field, value);
     QList<T> result;
-    for (int id : ids) {
+    for (int id : ids)
+    {
         result.append(*getById(id));
     }
     return result;
@@ -202,7 +205,7 @@ void DataSet<T>::removeByField(int field, const QString& value)
     }
 }
 
-template <typename T>
+//template <typename T>
 /*void DataSet<T>::updateByField(int field, const QString& value, const T& data)
 {
     std::vector<int> ids = getIdsByField(field, value); // 获取所有匹配的id
@@ -211,4 +214,16 @@ template <typename T>
         update(id, data); // 更新所有匹配的数据
     }
 }*/
+
+template <typename T>
+QList<T> DataSet<T>::getAll() const
+{
+    QList<T> result;
+    std::vector<T> data = tree.getAllData(); // 获取所有data
+    for (const T& d : data)
+    {
+        result.append(d); // 将所有data存入QList
+    }
+    return result;
+}
 #endif // LIBRARYMANAGEMENTSYSTEM_DATASET_H

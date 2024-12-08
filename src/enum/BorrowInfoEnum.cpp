@@ -6,7 +6,6 @@
 
 
 const QString BorrowInfoEnumString[BORROWINFO_ENUM_COUNT] = {
-    "ID",
     "BookID",
     "UserID",
     "BorrowDate",

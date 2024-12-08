@@ -4,82 +4,71 @@
 
 #include "class/borrowInfo.h"
 
-BorrowInfo::BorrowInfo() {
+BorrowInfo::BorrowInfo()
+{
     this->id = -1;
-    this->bookId = -1;
-    this->userId = -1;
-    this->borrowDate = "null";
-    this->returnDate = "null";
-    this->isReturned = false;
+    for (auto i : this->info)
+    {
+        i = "null";
+    }
 }
 
-BorrowInfo::BorrowInfo(int id, int bookId, int userId, const QString &borrowDate, const QString &returnDate,
-                       bool isReturned) {
+BorrowInfo::BorrowInfo(int id, int bookId, int userId, const QString& borrowDate, const QString& returnDate,
+                       bool isReturned)
+{
     this->id = id;
-    this->bookId = bookId;
-    this->userId = userId;
-    this->borrowDate = borrowDate;
-    this->returnDate = returnDate;
-    this->isReturned = isReturned;
+    this->info[BorrowInfoEnum::BORROWINFO_BOOKID] = QString::number(bookId);
+    this->info[BorrowInfoEnum::BORROWINFO_USERID] = QString::number(userId);
+    this->info[BorrowInfoEnum::BORROWINFO_BORROWDATE] = borrowDate;
+    this->info[BorrowInfoEnum::BORROWINFO_RETURNDATE] = returnDate;
+    this->info[BorrowInfoEnum::BORROWINFO_ISRETURNED] = isReturned ? "true" : "false";
 }
 
-int BorrowInfo::getId() const {
+BorrowInfo::BorrowInfo(QJsonObject obj)
+{
+    this->id=obj["id"].toInt();
+    this->info[BorrowInfoEnum::BORROWINFO_BOOKID]=QString::number(obj["bookId"].toInt());
+    this->info[BorrowInfoEnum::BORROWINFO_USERID]=QString::number(obj["userId"].toInt());
+    this->info[BorrowInfoEnum::BORROWINFO_BORROWDATE]=obj["borrowDate"].toString();
+    this->info[BorrowInfoEnum::BORROWINFO_RETURNDATE]=obj["returnDate"].toString();
+    this->info[BorrowInfoEnum::BORROWINFO_ISRETURNED]=obj["isReturned"].toBool()?"true":"false";
+
+}
+
+
+int BorrowInfo::getId() const
+{
     return this->id;
 }
 
-void BorrowInfo::setId(int id) {
+void BorrowInfo::setId(int id)
+{
     this->id = id;
 }
 
-int BorrowInfo::getBookId() const {
-    return this->bookId;
+QString BorrowInfo::getInfo(int index) const
+{
+    return this->info[index];
 }
 
-void BorrowInfo::setBookId(int bookId) {
-    this->bookId = bookId;
+void BorrowInfo::setInfo(BorrowInfoEnum index, const QString& info)
+{
+    this->info[index] = info;
 }
 
-int BorrowInfo::getUserId() const {
-    return this->userId;
+bool operator==(const BorrowInfo& lhs, const BorrowInfo& rhs)
+{
+    if (lhs.id!=rhs.id)
+    {
+        return false;
+    }
+    for (int i = 0; i < BorrowInfoEnum::BORROWINFO_ENUM_COUNT; i++)
+    {
+        if (lhs.info[i] != rhs.info[i])
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
-void BorrowInfo::setUserId(int userId) {
-    this->userId = userId;
-}
-
-QString BorrowInfo::getBorrowDate() const {
-    return this->borrowDate;
-}
-
-void BorrowInfo::setBorrowDate(const QString &borrowDate) {
-    this->borrowDate = borrowDate;
-}
-
-QString BorrowInfo::getReturnDate() const {
-    return this->returnDate;
-}
-
-void BorrowInfo::setReturnDate(const QString &returnDate) {
-    this->returnDate = returnDate;
-}
-
-bool BorrowInfo::getIsReturned() const {
-    return this->isReturned;
-}
-
-void BorrowInfo::setIsReturned(bool isReturned) {
-    this->isReturned = isReturned;
-}
-
-void BorrowInfo::set(int bookId, int userId, const QString &borrowDate, const QString &returnDate, bool isReturned) {
-    this->bookId = bookId;
-    this->userId = userId;
-    this->borrowDate = borrowDate;
-    this->returnDate = returnDate;
-    this->isReturned = isReturned;
-}
-
-bool operator==(const BorrowInfo &lhs, const BorrowInfo &rhs) {
-    return lhs.id == rhs.id && lhs.bookId == rhs.bookId && lhs.userId == rhs.userId &&
-           lhs.borrowDate == rhs.borrowDate && lhs.returnDate == rhs.returnDate && lhs.isReturned == rhs.isReturned;
-}

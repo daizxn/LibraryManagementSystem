@@ -6,7 +6,6 @@
 
 
 const QString UserEnumString[USER_ENUM_COUNT] = {
-    "ID",
     "Name",
     "Password"
 };

@@ -5,36 +5,31 @@
 #ifndef LIBRARYMANAGEMENTSYSTEM_USER_H
 #define LIBRARYMANAGEMENTSYSTEM_USER_H
 
+#include <QJsonObject>
+
 #include "enum/UserEnum.h"
 
 class User
 {
 private:
     int id;
-    QString username;
-    QString password;
     QString info[UserEnum::USER_ENUM_COUNT];
 
 public:
     //constructor
     User();
 
+    User(QJsonObject obj);
+
     User(int id, const QString& username, const QString& password);
 
     //getter and setter
-    int getId() const;
-
+    [[nodiscard]] int getId() const;
     void setId(int id);
 
-    const QString& getUsername() const;
+    [[nodiscard]] QString getInfo(int index) const;
+    void setInfo(UserEnum index, const QString& info);
 
-    void setUsername(const QString& username);
-
-    const QString& getPassword() const;
-
-    void setPassword(const QString& password);
-
-    void set(const QString& username, const QString& password);
 
     //operator overload
     friend bool operator==(const User& lhs, const User& rhs);

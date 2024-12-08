@@ -121,3 +121,15 @@ TEST(AVLTreeTests, RemoveRootNode) {
     ASSERT_EQ(*tree.search(2), "data2");
     ASSERT_EQ(*tree.search(3), "data3");
 }
+
+TEST(AVLTreeTests,GetAllData){
+    AVLTree<int, std::string> tree;
+    tree.insert(1, "data1");
+    tree.insert(2, "data2");
+    tree.insert(3, "data3");
+    std::vector<std::string> data = tree.getAllData();
+    ASSERT_EQ(data.size(), 3);
+    ASSERT_EQ(data[0], "data1");
+    ASSERT_EQ(data[1], "data2");
+    ASSERT_EQ(data[2], "data3");
+}

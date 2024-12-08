@@ -17,6 +17,7 @@ Login::Login(QWidget *parent) :
     ui->setupUi(this);
     initLogin();
 
+    ui->lgPassword->setEchoMode(QLineEdit::Password); //设置密码输入框为密码模式
 
     connect(ui->loginBtn, &QPushButton::clicked, this, &Login::login);
     connect(ui->exitBtn, &QPushButton::clicked, this, &Login::exit);

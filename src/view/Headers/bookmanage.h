@@ -6,22 +6,37 @@
 #define LIBRARYMANAGEMENTSYSTEM_BOOKMANAGE_H
 
 #include <QWidget>
+#include <QStandardItemModel>
+#include "class/book.h"
+#include "data/DataSet.h"
+#include "bookinfodialog.h"
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class BookManage; }
+
+namespace Ui
+{
+    class BookManage;
+}
+
 QT_END_NAMESPACE
 
-class BookManage : public QWidget {
-Q_OBJECT
+class BookManage : public QWidget
+{
+    Q_OBJECT
 
 public:
-    explicit BookManage(QWidget *parent = nullptr);
+    explicit BookManage(QWidget* parent = nullptr);
 
     ~BookManage() override;
 
 private:
-    Ui::BookManage *ui;
+    Ui::BookManage* ui;
+    QStandardItemModel *bookModel;
+    BookInfoDialog* bookInfoDialog;
+    DataSet<Book> bookDataSet;
+    void initTable();
+
 };
 
 
