@@ -26,6 +26,7 @@ public:
 
     Book(int id, const QString& name, const QString& author, const QString& isbn, bool isBorrowed);
 
+    QJsonObject toJsonObject() const;
     //getter and setter
     [[nodiscard]] int getId() const;
     void setId(int id);

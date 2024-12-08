@@ -18,11 +18,14 @@ class DataSet
 {
 private:
     int infoCount;
+    int idCount;
     AVLTree<int, T> tree; // 存储id为键的数据
     std::multimap<QString, int>* reverseLookup; // 根据其他字段反查多个id
 
 public:
     DataSet(const QString& filePath, int infoCount);
+
+    void addNewData(T &data);
 
     void insert(const T& data);
 
@@ -33,6 +36,8 @@ public:
     void removeByField(int field, const QString& value);
 
     //void updateByField(int field, const QString& value, const T& data);
+
+    void saveToFile(const QString& filePath) const;
 
     T* getById(int id);
 
@@ -58,8 +63,7 @@ DataSet<T>::DataSet(const QString& filePath, const int infoCount)
     QTextStream reader(&file);
     reader.setEncoding(QStringConverter::Encoding::Utf8);
     QString fileData = reader.readAll();
-    file.close();
-
+    file.close();// 关闭文件
     // 解析json数据
     QJsonParseError jsonError;
     QJsonDocument jsonDocument = QJsonDocument::fromJson(fileData.toUtf8());
@@ -69,6 +73,10 @@ DataSet<T>::DataSet(const QString& filePath, const int infoCount)
     }
 
     QJsonObject jsonObject = jsonDocument.object();
+    if (jsonObject.contains("idCount"))
+    {
+        idCount = jsonObject["idCount"].toInt();
+    }
     if (jsonObject.contains("data") && jsonObject["data"].isArray())
     {
         QJsonArray dataArray = jsonObject["data"].toArray();
@@ -125,6 +133,14 @@ QList<T> DataSet<T>::getByField(const int field, const QString& value)
         result.append(*getById(id));
     }
     return result;
+}
+
+template <typename T>
+void DataSet<T>::addNewData(T &data)
+{
+    data.setId(idCount);
+    idCount++;
+    insert(data);
 }
 
 template <typename T>
@@ -225,5 +241,34 @@ QList<T> DataSet<T>::getAll() const
         result.append(d); // 将所有data存入QList
     }
     return result;
+}
+
+template <typename T>
+void DataSet<T>::saveToFile(const QString& filePath) const
+{
+    QJsonObject jsonObject;
+    jsonObject["idCount"] = idCount;
+
+    QJsonArray dataArray;
+    std::vector<T> data = tree.getAllData(); // 获取所有data
+    for (const T& d : data)
+    {
+        QJsonObject dataObj = d.toJsonObject(); // 将data转换为json对象
+        dataArray.append(dataObj); // 将json对象存入json数组
+    }
+    jsonObject["data"] = dataArray;
+
+    QJsonDocument jsonDocument(jsonObject); // 创建json文档
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        qDebug() << "Failed to open file for writing:" << file.errorString();
+        throw std::runtime_error("Failed to open file");
+    }
+
+    QTextStream writer(&file);
+    writer.setEncoding(QStringConverter::Encoding::Utf8);
+    writer << jsonDocument.toJson(); // 将json文档写入文件
+    file.close();
 }
 #endif // LIBRARYMANAGEMENTSYSTEM_DATASET_H

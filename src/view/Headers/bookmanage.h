@@ -32,11 +32,21 @@ public:
 
 private:
     Ui::BookManage* ui;
-    QStandardItemModel *bookModel;
+    QStandardItemModel* bookModel;
     BookInfoDialog* bookInfoDialog;
     DataSet<Book> bookDataSet;
     void initTable();
+    void loadTable();
+    void deleteBook(int id);
+    void editBook(int id, const Book& book);
+    void queryLoad();
 
+private slots:
+    void addBtnClicked();
+    void saveBtnClicked() const;
+    void editBtnClicked();
+    void deleteBtnClicked();
+    void query();
 };
 
 

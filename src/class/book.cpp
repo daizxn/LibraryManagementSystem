@@ -32,6 +32,16 @@ Book::Book(int id, const QString &name, const QString &author, const QString &is
 
 }
 
+QJsonObject Book::toJsonObject() const {
+    QJsonObject obj;
+    obj["id"]=this->id;
+    obj["name"]=this->info[BookEnum::BOOK_NAME];
+    obj["author"]=this->info[BookEnum::BOOK_AUTHOR];
+    obj["isbn"]=this->info[BookEnum::BOOK_ISBN];
+    obj["isBorrowed"]=this->info[BookEnum::BOOK_ISBORROWED]=="true";
+    return obj;
+}
+
 int Book::getId() const {
     return this->id;
 }

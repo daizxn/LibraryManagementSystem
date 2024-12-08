@@ -1,26 +1,26 @@
 {
-  "bookCount": 3,
-  "data": [
-    {
-      "id": 1,
-      "name": "C++ Primer",
-      "author": "Stanley B. Lippman",
-      "isbn": "978-7-121-15535-2",
-      "isBorrowed": false
-    },
-    {
-      "id": 2,
-      "name": "Java Core",
-      "author": "Cay S. Horstmann",
-      "isbn": "978-7-121-15535-2",
-      "isBorrowed": false
-    },
-    {
-      "id": 3,
-      "name": "Data Structure",
-      "author": "Clifford A. Shaffer",
-      "isbn": "978-7-121-15535-2",
-      "isBorrowed": false
-    }
-  ]
+    "data": [
+        {
+            "author": "Stanley B. Lippman",
+            "id": 1,
+            "isBorrowed": false,
+            "isbn": "978-7-121-15535-11",
+            "name": "C++ Primer"
+        },
+        {
+            "author": "Cay S. Horstmann",
+            "id": 2,
+            "isBorrowed": false,
+            "isbn": "978-7-121-15535-2",
+            "name": "Java Core"
+        },
+        {
+            "author": "Clifford A. Shaffer",
+            "id": 3,
+            "isBorrowed": false,
+            "isbn": "978-7-121-15535-2",
+            "name": "Data Structure"
+        }
+    ],
+    "idCount": 6
 }
