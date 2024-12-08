@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <QList>
 
 enum Color { RED, BLACK };
 
@@ -33,6 +34,7 @@ private:
     void deleteFixup(std::shared_ptr<Node> x, std::shared_ptr<Node> parent, bool isLeftChild);
     void clearHelper(std::shared_ptr<Node>& node);
     std::shared_ptr<Node> treeMinimum(std::shared_ptr<Node> node);
+    void inOrderTraversalHelper(std::shared_ptr<Node> node, QList<QPair<KeyType, ValueType>>& result);
 
 public:
     RedBlackTree() : root(nullptr)
@@ -45,6 +47,8 @@ public:
     void clear(); // 清空红黑树
     void printInOrder() const; // 中序遍历打印红黑树
     void printInOrderHelper(const std::shared_ptr<Node>& node) const;
+    void inOrderTraversal(QList<QPair<KeyType, ValueType>>& result);
+    bool contains(KeyType key);
 };
 
 
@@ -389,6 +393,24 @@ void RedBlackTree<KeyType, ValueType>::printInOrderHelper(const std::shared_ptr<
 }
 
 template <typename KeyType, typename ValueType>
+void RedBlackTree<KeyType, ValueType>::inOrderTraversalHelper(std::shared_ptr<Node> node, QList<QPair<KeyType, ValueType>>& result)
+{
+    if (!node) return;
+    inOrderTraversalHelper(node->left, result); // 递归遍历左子树
+    for (const auto& value : node->values)
+    {
+        result.append(qMakePair(node->key, value)); // 将键值对添加到结果列表
+    }
+    inOrderTraversalHelper(node->right, result); // 递归遍历右子树
+}
+
+template <typename KeyType, typename ValueType>
+void RedBlackTree<KeyType, ValueType>::inOrderTraversal(QList<QPair<KeyType, ValueType>>& result)
+{
+    inOrderTraversalHelper(root, result);
+}
+
+template <typename KeyType, typename ValueType>
 void RedBlackTree<KeyType, ValueType>::clear()
 {
     clearHelper(root); // 递归释放节点
@@ -402,4 +424,19 @@ void RedBlackTree<KeyType, ValueType>::clearHelper(std::shared_ptr<Node>& node)
     clearHelper(node->left); // 递归清空左子树
     clearHelper(node->right); // 递归清空右子树
     node.reset(); // 释放当前节点
+}
+
+template <typename KeyType, typename ValueType>
+bool RedBlackTree<KeyType, ValueType>::contains(KeyType key)
+{
+    auto x = root;
+    while (x)
+    {
+        if (key == x->key)
+        {
+            return true;
+        }
+        x = key < x->key ? x->left : x->right;
+    }
+    return false;
 }
