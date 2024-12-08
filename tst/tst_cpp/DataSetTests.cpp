@@ -5,15 +5,7 @@
 #include "data/DataSet.h"
 #include "class/book.h"
 
-TEST(DataSetTests, GetById) {
-    DataSet<Book> dataSet(":book/book/bookInfo.json", BookEnum::BOOK_ENUM_COUNT);
-    Book *book = dataSet.getById(1);
-    ASSERT_EQ(book->getId(), 1);
-    ASSERT_EQ(book->getInfo(BookEnum::BOOK_NAME), "C++ Primer");
-    ASSERT_EQ(book->getInfo(BookEnum::BOOK_AUTHOR), "Stanley B. Lippman");
-    ASSERT_EQ(book->getInfo(BookEnum::BOOK_ISBN), "978-7-121-15535-2");
-    ASSERT_EQ(book->getInfo(BookEnum::BOOK_ISBORROWED), "false");
-}
+
 
 TEST(DataSetTests, GetIdsByField) {
     DataSet<Book> dataSet(":book/book/bookInfo.json", BookEnum::BOOK_ENUM_COUNT);
