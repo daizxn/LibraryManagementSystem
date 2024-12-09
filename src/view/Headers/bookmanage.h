@@ -5,11 +5,11 @@
 #ifndef LIBRARYMANAGEMENTSYSTEM_BOOKMANAGE_H
 #define LIBRARYMANAGEMENTSYSTEM_BOOKMANAGE_H
 
+#include <QLabel>
 #include <QWidget>
-#include <QStandardItemModel>
-#include "class/book.h"
-#include "data/DataSet.h"
-#include "bookinfodialog.h"
+#include <QMessageBox>
+#include <data/DataBase.h>
+#include <util/normUtil.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -32,21 +32,15 @@ public:
 
 private:
     Ui::BookManage* ui;
-    QStandardItemModel* bookModel;
-    BookInfoDialog* bookInfoDialog;
-    DataSet<Book> bookDataSet;
-    void initTable();
-    void loadTable();
-    void deleteBook(int id);
-    void editBook(int id, const Book& book);
-    void queryLoad();
 
+
+    Database bookDB;
+
+
+    void init();
+    void loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>&);
 private slots:
-    void addBtnClicked();
-    void saveBtnClicked() const;
-    void editBtnClicked();
-    void deleteBtnClicked();
-    void query();
+
 };
 
 
