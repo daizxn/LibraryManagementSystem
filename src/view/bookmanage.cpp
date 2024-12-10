@@ -12,7 +12,8 @@
 BookManage::BookManage(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::BookManage),
-    bookDB("../resource/book/bookInfo.json")
+    bookDB("../resource/book/bookInfo.json"),
+    modifyIngo(new ModifyIngo(this, &bookDB))
 {
     ui->setupUi(this);
     init();
@@ -30,7 +31,7 @@ void BookManage::init()
     loadTable(bookData);
 }
 
-void BookManage::loadTable(const QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>>& bookData) const
+void BookManage::loadTable(const QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>>& bookData)
 {
     //清空表格
     ui->bookTable->clearContents();
@@ -47,7 +48,7 @@ void BookManage::loadTable(const QList<QPair<QString, QList<QSharedPointer<QJson
         int row = ui->bookTable->rowCount();
         ui->bookTable->insertRow(row);
 
-        auto* schemeDialog = new SchemeDialog(book.second);
+        auto* schemeDialog = new SchemeDialog(book.second, &bookDB,this, modifyIngo);
         ui->bookTable->setCellWidget(row, 0, schemeDialog);
         ui->bookTable->resizeRowsToContents();
 
@@ -55,6 +56,13 @@ void BookManage::loadTable(const QList<QPair<QString, QList<QSharedPointer<QJson
         {
             ui->bookTable->resizeRowToContents(row);
             ui->bookTable->resizeRowToContents(row);
+        });
+        connect(schemeDialog, &SchemeDialog::bookChanged, [this](bool isChanged)
+        {
+            if (isChanged)
+            {
+                init();
+            }
         });
     }
 }

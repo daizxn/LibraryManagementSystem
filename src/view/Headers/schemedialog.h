@@ -9,6 +9,8 @@
 #include <QJsonObject>
 #include <QDate>
 #include <QDateEdit>
+#include "modifyinfo.h"
+#include "data/DataBase.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -26,7 +28,7 @@ class SchemeDialog : public QDialog
 
 public:
     explicit SchemeDialog(QWidget* parent = nullptr);
-    SchemeDialog(const QList<QSharedPointer<QJsonObject>>& data, QWidget* parent = nullptr);
+    SchemeDialog(const QList<QSharedPointer<QJsonObject>>& data, Database* bookDB=nullptr,QWidget* parent = nullptr, ModifyIngo* modifyIngo = nullptr);
     ~SchemeDialog() override;
 
     void init();
@@ -37,10 +39,13 @@ public:
 
 private:
     Ui::SchemeDialog* ui;
+    Database* bookDB;
+    ModifyIngo* modifyIngo;
     QList<QSharedPointer<QJsonObject>> dataLists;
 
 signals:
     void folded(bool);
+    void bookChanged(bool);
 
 private slots:
     void foldButton();

@@ -7,8 +7,7 @@
 
 #include <QMainWindow>
 #include "bookmanage.h"
-#include "borrowhistory.h"
-#include "usermanage.h"
+
 
 
 QT_BEGIN_NAMESPACE

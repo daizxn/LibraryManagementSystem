@@ -1,102 +1,102 @@
 [
-  {
-    "author": "Stanley B. Lippman",
-    "id": 1,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-11",
-    "bookName": "C++ Primer",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Cay S. Horstmann",
-    "id": 2,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "Java Core",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Clifford A. Shaffer",
-    "id": 3,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "Data Structure",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Robert C. Martin",
-    "id": 4,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "Clean Code",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Martin Fowler",
-    "id": 5,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "Refactoring",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Joshua Bloch",
-    "id": 6,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "Effective Java",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Brian W. Kernighan",
-    "id": 7,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "The C Programming Language",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Bjarne Stroustrup",
-    "id": 8,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "The C++ Programming Language",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Erich Gamma",
-    "id": 9,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "Design Patterns",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  },
-  {
-    "author": "Andrew S. Tanenbaum",
-    "id": 10,
-    "isBorrowed": false,
-    "isbn": "978-7-121-15535-2",
-    "bookName": "Computer Networks",
-    "borrower": "daizxn",
-    "borrowDate": "2021-09-01",
-    "returnDate": "2021-09-30"
-  }
+    {
+        "author": "Stanley B. Lippman",
+        "bookName": "C++ Primer",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 1,
+        "isBorrowed": 0,
+        "isbn": "978-7-121-15535-11",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Cay S. Horstmann",
+        "bookName": "Java Core",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 2,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Clifford A. Shaffer",
+        "bookName": "Data Structure",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 3,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Robert C. Martin",
+        "bookName": "Clean Code",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 4,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Martin Fowler",
+        "bookName": "Refactoring",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 5,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Joshua Bloch",
+        "bookName": "Effective Java",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 6,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Brian W. Kernighan",
+        "bookName": "The C Programming Language",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 7,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Bjarne Stroustrup",
+        "bookName": "The C++ Programming Language",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 8,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Erich Gamma",
+        "bookName": "Design Patterns",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 9,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    },
+    {
+        "author": "Andrew S. Tanenbaum",
+        "bookName": "Computer Networks",
+        "borrowDate": "2021-09-01",
+        "borrower": "daizxn",
+        "id": 10,
+        "isBorrowed": false,
+        "isbn": "978-7-121-15535-2",
+        "returnDate": "2021-09-30"
+    }
 ]

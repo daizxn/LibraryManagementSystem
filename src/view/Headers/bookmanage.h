@@ -11,6 +11,7 @@
 #include <data/DataBase.h>
 #include <util/normUtil.h>
 #include "schemedialog.h"
+#include "modifyinfo.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -32,14 +33,14 @@ public:
 
 private:
     Ui::BookManage* ui;
-
+    ModifyIngo* modifyIngo;
 
     Database bookDB;
 
 
 
     void init();
-    void loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>&) const;
+    void loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>&);
 
 
 

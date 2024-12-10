@@ -12,12 +12,11 @@ SchemeDialog::SchemeDialog(QWidget* parent) :
     QDialog(parent), ui(new Ui::SchemeDialog)
 {
     ui->setupUi(this);
-
-
 }
 
-SchemeDialog::SchemeDialog(const QList<QSharedPointer<QJsonObject>>& data, QWidget* parent) :
-    QDialog(parent), ui(new Ui::SchemeDialog), dataLists(data)
+SchemeDialog::SchemeDialog(const QList<QSharedPointer<QJsonObject>>& data, Database* bookDB, QWidget* parent,
+                           ModifyIngo* modifyIngo) :
+    QDialog(parent), ui(new Ui::SchemeDialog), dataLists(data), bookDB(bookDB), modifyIngo(modifyIngo)
 {
     ui->setupUi(this);
 
@@ -27,6 +26,13 @@ SchemeDialog::SchemeDialog(const QList<QSharedPointer<QJsonObject>>& data, QWidg
     ui->groupBox->setVisible(false);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &SchemeDialog::foldButton);
+    connect(SchemeDialog::modifyIngo, &ModifyIngo::modifyInfo, [this](bool isChanged)
+    {
+        if (isChanged)
+        {
+            emit bookChanged(true);
+        }
+    });
 }
 
 SchemeDialog::~SchemeDialog()
@@ -71,7 +77,7 @@ void SchemeDialog::loadTable()
     ui->detailBookInfo->setRowCount(0);
 
     QStringList header;
-    header << "ID" << "书名" << "是否借阅" << "借阅者" << "借阅时间" << "预计归还时间" << "操作"<<"";
+    header << "ID" << "书名" << "是否借阅" << "借阅者" << "借阅时间" << "预计归还时间" << "操作" << "";
 
     ui->detailBookInfo->setColumnCount(header.size());
     ui->detailBookInfo->setHorizontalHeaderLabels(header);
@@ -91,31 +97,66 @@ void SchemeDialog::loadTable()
         {
             ui->detailBookInfo->setItem(row, 3, new QTableWidgetItem(data->value("borrower").toString()));
 
-            QDate borrpwDate = QDate::fromString(data->value("borrowDate").toString(), "yyyy-MM-dd");
+            QDate borrpwDate;
+            if (!data->value("borrowDate").toString().isEmpty())
+                borrpwDate = QDate::fromString(data->value("borrowDate").toString(), "yyyy-MM-dd");
             QDateEdit* borrowDateEdit = new QDateEdit(borrpwDate);
             borrowDateEdit->setEnabled(false);
             ui->detailBookInfo->setCellWidget(row, 4, borrowDateEdit);
-            QDate returnDate = QDate::fromString(data->value("returnDate").toString(), "yyyy-MM-dd");
+            QDate returnDate;
+            if (!data->value("returnDate").toString().isEmpty())
+                returnDate = QDate::fromString(data->value("returnDate").toString(), "yyyy-MM-dd");
             QDateEdit* returnDateEdit = new QDateEdit(returnDate);
             returnDateEdit->setEnabled(false);
             ui->detailBookInfo->setCellWidget(row, 5, returnDateEdit);
         }
         else
         {
-            ui->detailBookInfo->setItem(row,3,new QTableWidgetItem(""));
-            ui->detailBookInfo->setItem(row,4,new QTableWidgetItem(""));
-            ui->detailBookInfo->setItem(row,5,new QTableWidgetItem(""));
+            ui->detailBookInfo->setItem(row, 3, new QTableWidgetItem(""));
+            ui->detailBookInfo->setItem(row, 4, new QTableWidgetItem(""));
+            ui->detailBookInfo->setItem(row, 5, new QTableWidgetItem(""));
         }
 
-
+        //操作按钮
         QPushButton* returnBtn = new QPushButton("归还");
         returnBtn->setProperty("id", data->value("id").toInt());
+        connect(returnBtn, &QPushButton::clicked, [this,data]()
+        {
+            data->value("isBorrowed") = false; //修改借阅状态
+            data->value("borrower") = ""; //重置借阅者
+            data->value("borrowDate") = ""; //重置借阅时间
+            data->value("returnDate") = ""; //重置归还时间
+            bookDB->modifyData(data->value("id").toInt(), *data); //修改数据库
+            emit bookChanged(true);
+        }); //归还函数
         QPushButton* borrowBtn = new QPushButton("借阅");
         borrowBtn->setProperty("id", data->value("id").toInt());
+        connect(borrowBtn, &QPushButton::clicked, [this,data]()
+        {
+            data->value("isBorrowed") = true; //修改借阅状态
+            data->value("borrower") = "admin"; //设置借阅者
+            data->value("borrowDate") = QDate::currentDate().toString("yyyy-MM-dd"); //设置借阅时间
+            data->value("returnDate") = QDate::currentDate().addDays(14).toString("yyyy-MM-dd"); //设置归还时间
+            modifyIngo->setParam(*data); //设置参数
+            modifyIngo->init(ModifyIngo::BorrowModel); //设置模式
+            modifyIngo->show(); //显示归还窗口
+            emit bookChanged(true);
+        }); //借阅函数
         QPushButton* deleteBtn = new QPushButton("删除");
         deleteBtn->setProperty("id", data->value("id").toInt());
+        connect(deleteBtn, &QPushButton::clicked, [this,data]()
+        {
+            bookDB->deleteData(data->value("id").toInt());
+            emit bookChanged(true);
+        }); //删除函数
         QPushButton* modifyBtn = new QPushButton("修改");
         modifyBtn->setProperty("id", data->value("id").toInt());
+        connect(modifyBtn, &QPushButton::clicked, [this,data]()
+        {
+            modifyIngo->setParam(*data);
+            modifyIngo->init(ModifyIngo::ModifyModel);
+            modifyIngo->show();
+        }); //修改函数
 
         QLayout* layout = new QHBoxLayout();
         layout->addWidget(returnBtn);
@@ -135,7 +176,7 @@ void SchemeDialog::loadTable()
 
         ui->detailBookInfo->resizeColumnsToContents();
 
-        ui->detailBookInfo->setColumnWidth(1,150);
+        ui->detailBookInfo->setColumnWidth(1, 150);
     }
 }
 
