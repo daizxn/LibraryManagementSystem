@@ -25,8 +25,8 @@ public:
 private:
     Ui::MainWindow *ui;
     BookManage *bookManage;
-    UserManage *userManage;
-    BorrowHistory *borrowHistory;
+    /*UserManage *userManage;
+    BorrowHistory *borrowHistory;*/
 
     void init();
     void initPage();

@@ -10,7 +10,7 @@
 #include <QMessageBox>
 #include <data/DataBase.h>
 #include <util/normUtil.h>
-
+#include "schemedialog.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -38,7 +38,7 @@ private:
 
 
     void init();
-    void loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>&);
+    void loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>&) const;
 private slots:
 
 };

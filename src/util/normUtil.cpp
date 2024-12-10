@@ -4,7 +4,7 @@
 
 #include "util/normUtil.h"
 
-QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>> normByField(const QString& field,
+ QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>> normUtil:: normByField(const QString& field,
                                                                       QList<QSharedPointer<QJsonObject>> data)
 {
     QMap<QString, QList<QSharedPointer<QJsonObject>>> temp;

@@ -9,7 +9,7 @@
 
 class normUtil {
 public:
-  static QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>> normByField(const QString &field,const QList<QSharedPointer<QJsonObject>>& data);//数据规范化函数
+  static QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>> normByField(const QString& field, QList<QSharedPointer<QJsonObject>> data);//数据规范化函数
 };
 
 

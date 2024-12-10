@@ -12,9 +12,10 @@
 BookManage::BookManage(QWidget* parent) :
     QWidget(parent),
     ui(new Ui::BookManage),
-    bookDB("../resources/book/bookInfo.json")
+    bookDB("../resource/book/bookInfo.json")
 {
     ui->setupUi(this);
+    init();
 }
 
 BookManage::~BookManage()
@@ -24,11 +25,11 @@ BookManage::~BookManage()
 
 void BookManage::init()
 {
-    QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>> bookData = normUtil::normByField("bookName",bookDB.queryAll());
+    const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>> bookData = normUtil::normByField("bookName",bookDB.queryAll());
     loadTable(bookData);
 }
 
-void BookManage::loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>& bookData)
+void BookManage::loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>& bookData) const
 {
     //清空表格
     ui->bookTable->clearContents();
@@ -42,7 +43,12 @@ void BookManage::loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonO
 
     for (auto &book : bookData)
     {
-        
+        int row = ui->bookTable->rowCount();
+        ui->bookTable->insertRow(row);
+
+        auto* schemeDialog=new SchemeDialog(book.second);
+        ui->bookTable->setCellWidget(row, 0, schemeDialog);
+        ui->bookTable->resizeRowsToContents();
     }
 
 }
