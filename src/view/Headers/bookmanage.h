@@ -37,8 +37,12 @@ private:
     Database bookDB;
 
 
+
     void init();
     void loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>&) const;
+
+
+
 private slots:
 
 };

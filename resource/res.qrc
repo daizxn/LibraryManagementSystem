@@ -4,6 +4,8 @@
         <file>image/user.svg</file>
         <file>image/history.svg</file>
         <file>image/search.svg</file>
+        <file>image/downArrow.svg</file>
+        <file>image/leftArrow.svg</file>
     </qresource>
     <qresource prefix="/account">
         <file>account/admin.json</file>

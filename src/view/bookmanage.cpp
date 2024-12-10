@@ -25,11 +25,12 @@ BookManage::~BookManage()
 
 void BookManage::init()
 {
-    const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>> bookData = normUtil::normByField("bookName",bookDB.queryAll());
+    const QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>> bookData = normUtil::normByField(
+        "bookName", bookDB.queryAll());
     loadTable(bookData);
 }
 
-void BookManage::loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonObject>>>>& bookData) const
+void BookManage::loadTable(const QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>>& bookData) const
 {
     //清空表格
     ui->bookTable->clearContents();
@@ -41,14 +42,19 @@ void BookManage::loadTable(const QList<QPair<QString,QList<QSharedPointer<QJsonO
     ui->bookTable->setColumnCount(1);
     ui->bookTable->setRowCount(0);
 
-    for (auto &book : bookData)
+    for (auto& book : bookData)
     {
         int row = ui->bookTable->rowCount();
         ui->bookTable->insertRow(row);
 
-        auto* schemeDialog=new SchemeDialog(book.second);
+        auto* schemeDialog = new SchemeDialog(book.second);
         ui->bookTable->setCellWidget(row, 0, schemeDialog);
         ui->bookTable->resizeRowsToContents();
-    }
 
+        connect(schemeDialog, &SchemeDialog::folded, [this, row]()
+        {
+            ui->bookTable->resizeRowToContents(row);
+            ui->bookTable->resizeRowToContents(row);
+        });
+    }
 }

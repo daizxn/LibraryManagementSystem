@@ -12,8 +12,6 @@
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         bookManage(nullptr),
-        userManage(nullptr),
-        borrowHistory(nullptr),
         ui(new Ui::MainWindow) {
 
 

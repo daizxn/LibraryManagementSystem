@@ -33,9 +33,19 @@ public:
     void loadUI();
     void loadTable();
 
+    void setFold();
+
 private:
     Ui::SchemeDialog* ui;
     QList<QSharedPointer<QJsonObject>> dataLists;
+
+signals:
+    void folded(bool);
+
+private slots:
+    void foldButton();
+
+
 };
 
 

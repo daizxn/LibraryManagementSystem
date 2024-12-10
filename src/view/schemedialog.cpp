@@ -12,13 +12,21 @@ SchemeDialog::SchemeDialog(QWidget* parent) :
     QDialog(parent), ui(new Ui::SchemeDialog)
 {
     ui->setupUi(this);
+
+
 }
 
 SchemeDialog::SchemeDialog(const QList<QSharedPointer<QJsonObject>>& data, QWidget* parent) :
     QDialog(parent), ui(new Ui::SchemeDialog), dataLists(data)
 {
     ui->setupUi(this);
+
+
     init();
+
+    ui->groupBox->setVisible(false);
+
+    connect(ui->pushButton, &QPushButton::clicked, this, &SchemeDialog::foldButton);
 }
 
 SchemeDialog::~SchemeDialog()
@@ -79,16 +87,26 @@ void SchemeDialog::loadTable()
         ui->detailBookInfo->setItem(row, 0, new QTableWidgetItem(QString::number(data->value("id").toInt())));
         ui->detailBookInfo->setItem(row, 1, new QTableWidgetItem(data->value("bookName").toString()));
         ui->detailBookInfo->setItem(row, 2, new QTableWidgetItem(data->value("isBorrowed").toBool() ? "是" : "否"));
-        ui->detailBookInfo->setItem(row, 3, new QTableWidgetItem(data->value("borrower").toString()));
+        if (data->value("isBorrowed").toBool())
+        {
+            ui->detailBookInfo->setItem(row, 3, new QTableWidgetItem(data->value("borrower").toString()));
 
-        QDate borrpwDate = QDate::fromString(data->value("borrowDate").toString(), "yyyy-MM-dd");
-        QDateEdit* borrowDateEdit = new QDateEdit(borrpwDate);
-        borrowDateEdit->setEnabled(false);
-        ui->detailBookInfo->setCellWidget(row, 4, borrowDateEdit);
-        QDate returnDate = QDate::fromString(data->value("returnDate").toString(), "yyyy-MM-dd");
-        QDateEdit* returnDateEdit = new QDateEdit(returnDate);
-        returnDateEdit->setEnabled(false);
-        ui->detailBookInfo->setCellWidget(row, 5, returnDateEdit);
+            QDate borrpwDate = QDate::fromString(data->value("borrowDate").toString(), "yyyy-MM-dd");
+            QDateEdit* borrowDateEdit = new QDateEdit(borrpwDate);
+            borrowDateEdit->setEnabled(false);
+            ui->detailBookInfo->setCellWidget(row, 4, borrowDateEdit);
+            QDate returnDate = QDate::fromString(data->value("returnDate").toString(), "yyyy-MM-dd");
+            QDateEdit* returnDateEdit = new QDateEdit(returnDate);
+            returnDateEdit->setEnabled(false);
+            ui->detailBookInfo->setCellWidget(row, 5, returnDateEdit);
+        }
+        else
+        {
+            ui->detailBookInfo->setItem(row,3,new QTableWidgetItem(""));
+            ui->detailBookInfo->setItem(row,4,new QTableWidgetItem(""));
+            ui->detailBookInfo->setItem(row,5,new QTableWidgetItem(""));
+        }
+
 
         QPushButton* returnBtn = new QPushButton("归还");
         returnBtn->setProperty("id", data->value("id").toInt());
@@ -119,4 +137,16 @@ void SchemeDialog::loadTable()
 
         ui->detailBookInfo->setColumnWidth(1,150);
     }
+}
+
+void SchemeDialog::setFold()
+{
+    bool isFold = !(ui->groupBox->isVisible());
+    ui->groupBox->setVisible(isFold);
+}
+
+void SchemeDialog::foldButton()
+{
+    setFold();
+    emit folded(ui->groupBox->isVisible());
 }
