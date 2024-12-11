@@ -112,12 +112,12 @@
     {
         "author": "111",
         "bookName": "111",
-        "borrowDate": "2024-12-10",
-        "borrower": "111111",
+        "borrowDate": "",
+        "borrower": "",
         "id": 12,
-        "isBorrowed": true,
+        "isBorrowed": false,
         "isbn": "111",
-        "returnDate": "2024-12-24"
+        "returnDate": ""
     },
     {
         "author": "111",

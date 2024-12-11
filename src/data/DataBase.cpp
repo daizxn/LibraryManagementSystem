@@ -142,16 +142,17 @@ QList<QSharedPointer<QJsonObject>> Database::queryByValue(const QString& value)
     std::vector<int> resultIds;
     for (auto& tree : fieldIndexes)
     {
-
-            std::vector<int> ids = tree.search(value);
-            resultIds.insert(resultIds.end(), ids.begin(), ids.end());
-
+        std::vector<int> ids = tree.search(value);
+        resultIds.insert(resultIds.end(), ids.begin(), ids.end());
     }
-    std::unique(resultIds.begin(), resultIds.end());
-    for (auto id : resultIds)
+    std::sort(resultIds.begin(), resultIds.end());
+    const auto end = std::unique(resultIds.begin(), resultIds.end());
+    for (auto it = resultIds.begin(); it != end; ++it)
     {
-        results.append(idIndex.search(id).front());
+        results.append(idIndex.search(*it).front());
     }
+
+
     return results;
 }
 

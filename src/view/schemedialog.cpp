@@ -192,6 +192,8 @@ void SchemeDialog::loadTable()
 
         ui->detailBookInfo->setColumnWidth(1, 150);
     }
+
+    ui->groupBox->setFixedHeight(ui->detailBookInfo->rowHeight(0)*dataLists.size() + 150);
 }
 
 void SchemeDialog::setFold()
