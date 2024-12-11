@@ -30,7 +30,7 @@ private:
     void loadDatabase();
 
     // 保存索引到文件
-    void saveDatabase();
+
 
     friend QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>> normByField(const QString& field); //数据规范化函数
 
@@ -50,6 +50,8 @@ public:
     // 查询所有数据
     QList<QSharedPointer<QJsonObject>> queryAll();
 
+    QList<QSharedPointer<QJsonObject>> queryByValue(const QString& value);
+
     // 修改数据
     bool modifyData(int id, const QJsonObject& newData);
 
@@ -58,5 +60,7 @@ public:
 
     // 获取当前数据库的 ID
     int getCurrentId() const;
+
+    void saveDatabase();
 };
 #endif //DATA_H

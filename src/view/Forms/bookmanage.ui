@@ -88,20 +88,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="editButton">
-        <property name="text">
-         <string>Modify info</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="deleteButton">
-        <property name="text">
-         <string>delete</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="horizontalSpacer_3">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>

@@ -45,7 +45,9 @@ private:
 
 
 private slots:
-
+    void addNewButtonClicked();
+    void saveButtonClicked();
+    void search();
 };
 
 

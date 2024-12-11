@@ -17,6 +17,10 @@ BookManage::BookManage(QWidget* parent) :
 {
     ui->setupUi(this);
     init();
+
+    connect(ui->addButton, &QPushButton::clicked, this, &BookManage::addNewButtonClicked);
+    connect(ui->searchLine, &QLineEdit::returnPressed, this, &BookManage::search);
+    connect(ui->saveButton, &QPushButton::clicked, this, &BookManage::saveButtonClicked);
 }
 
 BookManage::~BookManage()
@@ -48,21 +52,51 @@ void BookManage::loadTable(const QList<QPair<QString, QList<QSharedPointer<QJson
         int row = ui->bookTable->rowCount();
         ui->bookTable->insertRow(row);
 
-        auto* schemeDialog = new SchemeDialog(book.second, &bookDB,this, modifyIngo);
+        auto* schemeDialog = new SchemeDialog(book.second, &bookDB, this, modifyIngo);
         ui->bookTable->setCellWidget(row, 0, schemeDialog);
         ui->bookTable->resizeRowsToContents();
-
+        disconnect(schemeDialog, &SchemeDialog::folded, nullptr, nullptr);
         connect(schemeDialog, &SchemeDialog::folded, [this, row]()
         {
-            ui->bookTable->resizeRowToContents(row);
-            ui->bookTable->resizeRowToContents(row);
+            ui->bookTable->resizeRowsToContents();
+
         });
-        connect(schemeDialog, &SchemeDialog::bookChanged, [this](bool isChanged)
+        disconnect(schemeDialog, &SchemeDialog::bookChanged, nullptr, nullptr);
+        connect(schemeDialog, &SchemeDialog::bookChanged, [this]()
         {
-            if (isChanged)
-            {
-                init();
-            }
+            init();
         });
     }
+}
+
+void BookManage::addNewButtonClicked()
+{
+    QJsonObject param;
+    param.insert("id", "-1");
+    modifyIngo->setParam(param);
+    modifyIngo->init(ModifyIngo::AddModel);
+    modifyIngo->show();
+    disconnect(modifyIngo, &ModifyIngo::modifyInfo, nullptr, nullptr);
+    connect(modifyIngo, &ModifyIngo::modifyInfo, [this]()
+    {
+        init();
+    });
+}
+
+void BookManage::search()
+{
+    QString key = ui->searchLine->text();
+    if (key.isEmpty())
+    {
+        init();
+        return;
+    }
+    const QList<QPair<QString, QList<QSharedPointer<QJsonObject>>>> bookData = normUtil::normByField(
+        "bookName", bookDB.queryByValue(key));
+    loadTable(bookData);
+}
+
+void BookManage::saveButtonClicked()
+{
+    bookDB.saveDatabase();
 }

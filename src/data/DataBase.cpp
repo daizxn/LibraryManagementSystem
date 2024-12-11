@@ -108,10 +108,7 @@ QList<QSharedPointer<QJsonObject>> Database::queryByField(const QString& field, 
         std::vector<int> ids = fieldIndexes[field].search(value);
         for (int id : ids)
         {
-            if (idIndex.contains(id))
-            {
-                results.append(idIndex.search(id).front());
-            }
+            results.append(idIndex.search(id).front());
         }
     }
     return results;
@@ -119,11 +116,12 @@ QList<QSharedPointer<QJsonObject>> Database::queryByField(const QString& field, 
 
 QSharedPointer<QJsonObject> Database::queryById(const int id)
 {
-    if (idIndex.contains(id))
+    auto result = idIndex.search(id);
+    if (result.empty())
     {
-        return idIndex.search(id).front();
+        return nullptr;
     }
-    return nullptr; // 如果没有找到数据，返回空
+    return result.front();
 }
 
 QList<QSharedPointer<QJsonObject>> Database::queryAll()
@@ -137,6 +135,26 @@ QList<QSharedPointer<QJsonObject>> Database::queryAll()
     }
     return results;
 }
+
+QList<QSharedPointer<QJsonObject>> Database::queryByValue(const QString& value)
+{
+    QList<QSharedPointer<QJsonObject>> results;
+    std::vector<int> resultIds;
+    for (auto& tree : fieldIndexes)
+    {
+
+            std::vector<int> ids = tree.search(value);
+            resultIds.insert(resultIds.end(), ids.begin(), ids.end());
+
+    }
+    std::unique(resultIds.begin(), resultIds.end());
+    for (auto id : resultIds)
+    {
+        results.append(idIndex.search(id).front());
+    }
+    return results;
+}
+
 
 bool Database::modifyData(const int id, const QJsonObject& newData)
 {

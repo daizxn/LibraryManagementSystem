@@ -47,11 +47,11 @@ public:
 
 
 signals:
-    void modifyInfo(bool);
+    void modifyInfo();
 
 private:
     Ui::ModifyIngo* ui;
-
+    int model;
     Database *bookDB;
     QJsonObject param;
 

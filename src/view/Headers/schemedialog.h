@@ -45,7 +45,7 @@ private:
 
 signals:
     void folded(bool);
-    void bookChanged(bool);
+    void bookChanged();
 
 private slots:
     void foldButton();

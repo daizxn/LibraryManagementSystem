@@ -5,6 +5,9 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_SchemeDialog.h" resolved
 
 #include "Headers/schemedialog.h"
+
+#include <QMessageBox>
+
 #include "Forms/ui_schemedialog.h"
 
 
@@ -26,12 +29,10 @@ SchemeDialog::SchemeDialog(const QList<QSharedPointer<QJsonObject>>& data, Datab
     ui->groupBox->setVisible(false);
 
     connect(ui->pushButton, &QPushButton::clicked, this, &SchemeDialog::foldButton);
-    connect(SchemeDialog::modifyIngo, &ModifyIngo::modifyInfo, [this](bool isChanged)
+    disconnect(modifyIngo, &ModifyIngo::modifyInfo, nullptr, nullptr);
+    connect(SchemeDialog::modifyIngo, &ModifyIngo::modifyInfo, [this]()
     {
-        if (isChanged)
-        {
-            emit bookChanged(true);
-        }
+        emit bookChanged();
     });
 }
 
@@ -122,32 +123,45 @@ void SchemeDialog::loadTable()
         returnBtn->setProperty("id", data->value("id").toInt());
         connect(returnBtn, &QPushButton::clicked, [this,data]()
         {
-            data->value("isBorrowed") = false; //修改借阅状态
-            data->value("borrower") = ""; //重置借阅者
-            data->value("borrowDate") = ""; //重置借阅时间
-            data->value("returnDate") = ""; //重置归还时间
-            bookDB->modifyData(data->value("id").toInt(), *data); //修改数据库
-            emit bookChanged(true);
+            if (!data->value("isBorrowed").toBool())
+            {
+                QMessageBox::warning(this, "警告", "该书未被借阅");
+                return;
+            }
+
+            QJsonObject returnData = *data;
+            returnData["isBorrowed"] = false; //修改借阅状态
+            returnData["borrower"] = ""; //重置借阅者
+            returnData["borrowDate"] = ""; //重置借阅时间
+            returnData["returnDate"] = ""; //重置归还时间
+            bookDB->modifyData(returnData["id"].toInt(), returnData); //修改数据库
+            emit bookChanged();
         }); //归还函数
         QPushButton* borrowBtn = new QPushButton("借阅");
         borrowBtn->setProperty("id", data->value("id").toInt());
         connect(borrowBtn, &QPushButton::clicked, [this,data]()
         {
-            data->value("isBorrowed") = true; //修改借阅状态
-            data->value("borrower") = "admin"; //设置借阅者
-            data->value("borrowDate") = QDate::currentDate().toString("yyyy-MM-dd"); //设置借阅时间
-            data->value("returnDate") = QDate::currentDate().addDays(14).toString("yyyy-MM-dd"); //设置归还时间
-            modifyIngo->setParam(*data); //设置参数
+            if (data->value("isBorrowed").toBool())
+            {
+                QMessageBox::warning(this, "警告", "该书已被借阅");
+                return;
+            }
+
+            QJsonObject borrowData = *data;
+            borrowData["isBorrowed"] = true; //修改借阅状态
+            borrowData["borrower"] = "借阅者"; //设置借阅者
+            borrowData["borrowDate"] = QDate::currentDate().toString("yyyy-MM-dd"); //设置借阅时间
+            borrowData["returnDate"] = QDate::currentDate().addDays(14).toString("yyyy-MM-dd"); //设置归还时间
+            modifyIngo->setParam(borrowData); //设置参数
             modifyIngo->init(ModifyIngo::BorrowModel); //设置模式
             modifyIngo->show(); //显示归还窗口
-            emit bookChanged(true);
         }); //借阅函数
         QPushButton* deleteBtn = new QPushButton("删除");
         deleteBtn->setProperty("id", data->value("id").toInt());
         connect(deleteBtn, &QPushButton::clicked, [this,data]()
         {
             bookDB->deleteData(data->value("id").toInt());
-            emit bookChanged(true);
+            emit bookChanged();
         }); //删除函数
         QPushButton* modifyBtn = new QPushButton("修改");
         modifyBtn->setProperty("id", data->value("id").toInt());
