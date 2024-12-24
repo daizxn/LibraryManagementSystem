@@ -37,9 +37,13 @@ void ModifyIngo::init(const int model)
     if (this->model & addFlag)
     {
         ui->bookNameLine->clear();
+        ui->bookNameLine->setEnabled(true);
         ui->authorLine->clear();
+        ui->authorLine->setEnabled(true);
         ui->ISBNLine->clear();
+        ui->ISBNLine->setEnabled(true);
         ui->isBorrowedBox->setCurrentIndex(0);
+        ui->isBorrowedBox->setEnabled(true);
         ui->borrowerLine->clear();
         ui->borrowerLine->setEnabled(false);
         ui->borrowDate->clear();

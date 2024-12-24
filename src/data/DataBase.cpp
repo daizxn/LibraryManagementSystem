@@ -24,7 +24,7 @@ void Database::loadDatabase()
     if (doc.isArray())
     {
         QJsonArray array = doc.array();
-        for (const auto& item : array)
+        for (const auto &item : array)
         {
             if (item.isObject())
             {
@@ -36,7 +36,7 @@ void Database::loadDatabase()
                     idIndex.insert(id, dataPtr); // ID索引
 
                     // 为每个字段建立索引
-                    for (const QString& key : obj.keys())
+                    for (const QString &key : obj.keys())
                     {
                         if (!fieldIndexes.contains(key))
                         {
@@ -65,7 +65,7 @@ void Database::saveDatabase()
     QJsonArray jsonArray;
     QList<QPair<int, QSharedPointer<QJsonObject>>> dataList;
     idIndex.inOrderTraversal(dataList);
-    for (const auto& data : dataList)
+    for (const auto &data : dataList)
     {
         jsonArray.append(*data.second);
     }
@@ -74,7 +74,7 @@ void Database::saveDatabase()
     file.close();
 }
 
-int Database::insertData(const QJsonObject& data)
+int Database::insertData(const QJsonObject &data)
 {
     currentId++; // 递增ID
     QJsonObject newData = data;
@@ -85,7 +85,7 @@ int Database::insertData(const QJsonObject& data)
     idIndex.insert(currentId, dataPtr);
 
     // 为每个字段建立索引
-    for (const QString& key : newData.keys())
+    for (const QString &key : newData.keys())
     {
         if (!fieldIndexes.contains(key))
         {
@@ -100,7 +100,7 @@ int Database::insertData(const QJsonObject& data)
     return currentId; // 返回生成的ID
 }
 
-QList<QSharedPointer<QJsonObject>> Database::queryByField(const QString& field, const QString& value)
+QList<QSharedPointer<QJsonObject>> Database::queryByField(const QString &field, const QString &value)
 {
     QList<QSharedPointer<QJsonObject>> results;
     if (fieldIndexes.contains(field))
@@ -129,35 +129,33 @@ QList<QSharedPointer<QJsonObject>> Database::queryAll()
     QList<QSharedPointer<QJsonObject>> results;
     QList<QPair<int, QSharedPointer<QJsonObject>>> dataList;
     idIndex.inOrderTraversal(dataList);
-    for (const auto& [fst, snd] : dataList)
+    for (const auto &[fst, snd] : dataList)
     {
         results.append(snd);
     }
     return results;
 }
 
-QList<QSharedPointer<QJsonObject>> Database::queryByValue(const QString& value)
+QList<QSharedPointer<QJsonObject>> Database::queryByValue(const QString &value)
 {
     QList<QSharedPointer<QJsonObject>> results;
     std::vector<int> resultIds;
-    for (auto& tree : fieldIndexes)
+    for (auto &tree : fieldIndexes)
     {
         std::vector<int> ids = tree.search(value);
         resultIds.insert(resultIds.end(), ids.begin(), ids.end());
     }
     std::sort(resultIds.begin(), resultIds.end());
-    const auto end = std::unique(resultIds.begin(), resultIds.end());
+    const auto end = std::unique(resultIds.begin(), resultIds.end()); // 去重
     for (auto it = resultIds.begin(); it != end; ++it)
     {
         results.append(idIndex.search(*it).front());
     }
 
-
     return results;
 }
 
-
-bool Database::modifyData(const int id, const QJsonObject& newData)
+bool Database::modifyData(const int id, const QJsonObject &newData)
 {
     if (!idIndex.contains(id))
     {
@@ -170,7 +168,7 @@ bool Database::modifyData(const int id, const QJsonObject& newData)
     idIndex.insert(id, updatedDataPtr);
 
     // 更新字段索引
-    for (const QString& key : newData.keys())
+    for (const QString &key : newData.keys())
     {
         fieldIndexes[key].remove(newData[key].toString(), id);
         fieldIndexes[key].insert(newData[key].toString(), id);
@@ -193,7 +191,7 @@ bool Database::deleteData(const int id)
     idIndex.remove(id, dataPtr);
 
     // 删除字段索引
-    for (const QString& key : dataPtr->keys())
+    for (const QString &key : dataPtr->keys())
     {
         fieldIndexes[key].remove((*dataPtr)[key].toString(), id);
     }

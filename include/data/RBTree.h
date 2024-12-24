@@ -4,7 +4,11 @@
 #include <algorithm>
 #include <QList>
 
-enum Color { RED, BLACK };
+enum Color
+{
+    RED,
+    BLACK
+};
 
 template <typename KeyType, typename ValueType>
 class RedBlackTree
@@ -26,42 +30,45 @@ private:
     std::shared_ptr<Node> root;
 
     // 辅助函数
-    void leftRotate(std::shared_ptr<Node> x);
+    void leftRotate(std::shared_ptr<Node> x); //
     void rightRotate(std::shared_ptr<Node> x);
     void insertFixup(std::shared_ptr<Node> z);
-    void transplant(std::shared_ptr<Node> u, std::shared_ptr<Node> v);
+    void transplant(std::shared_ptr<Node> u, std::shared_ptr<Node> v); // 插入节点时用于替换节点
     void deleteNode(std::shared_ptr<Node> z);
     void deleteFixup(std::shared_ptr<Node> x, std::shared_ptr<Node> parent, bool isLeftChild);
-    void clearHelper(std::shared_ptr<Node>& node);
+    void clearHelper(std::shared_ptr<Node> &node);
     std::shared_ptr<Node> treeMinimum(std::shared_ptr<Node> node);
-    void inOrderTraversalHelper(std::shared_ptr<Node> node, QList<QPair<KeyType, ValueType>>& result);
+    void inOrderTraversalHelper(std::shared_ptr<Node> node, QList<QPair<KeyType, ValueType>> &result);
+    void printInOrderHelper(const std::shared_ptr<Node> &node) const;
 
 public:
     RedBlackTree() : root(nullptr)
     {
     }
 
-    void insert(const KeyType& key, const ValueType& value); // 插入一个键值对
-    bool remove(const KeyType& key, const ValueType& value); // 删除特定键值对
-    std::vector<ValueType> search(const KeyType& key) const; // 查询键对应的所有值
-    void clear(); // 清空红黑树
-    void printInOrder() const; // 中序遍历打印红黑树
-    void printInOrderHelper(const std::shared_ptr<Node>& node) const;
-    void inOrderTraversal(QList<QPair<KeyType, ValueType>>& result);
+    void insert(const KeyType &key, const ValueType &value); // 插入一个键值对
+    bool remove(const KeyType &key, const ValueType &value); // 删除特定键值对
+    std::vector<ValueType> search(const KeyType &key) const; // 查询键对应的所有值
+    void clear();                                            // 清空红黑树
+    void printInOrder() const;                               // 中序遍历打印红黑树
+    void inOrderTraversal(QList<QPair<KeyType, ValueType>> &result);
     bool contains(KeyType key);
 };
-
 
 template <typename KeyType, typename ValueType>
 void RedBlackTree<KeyType, ValueType>::leftRotate(std::shared_ptr<Node> x)
 {
     auto y = x->right;
     x->right = y->left;
-    if (y->left) y->left->parent = x;
+    if (y->left)
+        y->left->parent = x;
     y->parent = x->parent;
-    if (!x->parent) root = y;
-    else if (x == x->parent->left) x->parent->left = y;
-    else x->parent->right = y;
+    if (!x->parent)
+        root = y;
+    else if (x == x->parent->left)
+        x->parent->left = y;
+    else
+        x->parent->right = y;
     y->left = x;
     x->parent = y;
 }
@@ -71,11 +78,15 @@ void RedBlackTree<KeyType, ValueType>::rightRotate(std::shared_ptr<Node> x)
 {
     auto y = x->left;
     x->left = y->right;
-    if (y->right) y->right->parent = x;
+    if (y->right)
+        y->right->parent = x;
     y->parent = x->parent;
-    if (!x->parent) root = y;
-    else if (x == x->parent->left) x->parent->left = y;
-    else x->parent->right = y;
+    if (!x->parent)
+        root = y;
+    else if (x == x->parent->left)
+        x->parent->left = y;
+    else
+        x->parent->right = y;
     y->right = x;
     x->parent = y;
 }
@@ -112,9 +123,8 @@ RedBlackTree<KeyType, ValueType>::treeMinimum(std::shared_ptr<Node> node)
     return node;
 }
 
-
 template <typename KeyType, typename ValueType>
-void RedBlackTree<KeyType, ValueType>::insert(const KeyType& key, const ValueType& value)
+void RedBlackTree<KeyType, ValueType>::insert(const KeyType &key, const ValueType &value)
 {
     std::shared_ptr<Node> y = nullptr;
     auto x = root;
@@ -207,7 +217,7 @@ void RedBlackTree<KeyType, ValueType>::insertFixup(std::shared_ptr<Node> z)
 }
 
 template <typename KeyType, typename ValueType>
-bool RedBlackTree<KeyType, ValueType>::remove(const KeyType& key, const ValueType& value)
+bool RedBlackTree<KeyType, ValueType>::remove(const KeyType &key, const ValueType &value)
 {
     auto z = root;
 
@@ -217,7 +227,8 @@ bool RedBlackTree<KeyType, ValueType>::remove(const KeyType& key, const ValueTyp
         z = key < z->key ? z->left : z->right;
     }
 
-    if (!z) return false; // 未找到键
+    if (!z)
+        return false; // 未找到键
 
     // 删除值
     auto it = std::find(z->values.begin(), z->values.end(), value);
@@ -225,32 +236,42 @@ bool RedBlackTree<KeyType, ValueType>::remove(const KeyType& key, const ValueTyp
     {
         z->values.erase(it); // 从值列表中移除值
         if (z->values.empty())
-            deleteNode(z);// 如果值列表为空，删除节点
+            deleteNode(z); // 如果值列表为空，删除节点
         return true;
     }
     return false;
 }
 
 template <typename KeyType, typename ValueType>
-void RedBlackTree<KeyType, ValueType>::deleteNode(std::shared_ptr<Node> z) {
+void RedBlackTree<KeyType, ValueType>::deleteNode(std::shared_ptr<Node> z)
+{
     auto y = z; // 要删除的节点或其后继
     auto yOriginalColor = y->color;
     std::shared_ptr<Node> x;
     std::shared_ptr<Node> xParent;
 
-    if (!z->left) {
+    if (!z->left)
+    {
         x = z->right;
         transplant(z, z->right); // 用右子树替换 z
-    } else if (!z->right) {
+    }
+    else if (!z->right)
+    {
         x = z->left;
         transplant(z, z->left); // 用左子树替换 z
-    } else {
+    }
+    else
+    {
         y = treeMinimum(z->right); // 找到后继节点
         yOriginalColor = y->color;
         x = y->right;
-        if (y->parent == z) {
-            if (x) x->parent = y;
-        } else {
+        if (y->parent == z)
+        {
+            if (x)
+                x->parent = y;
+        }
+        else
+        {
             transplant(y, y->right);
             y->right = z->right;
             y->right->parent = y;
@@ -261,10 +282,14 @@ void RedBlackTree<KeyType, ValueType>::deleteNode(std::shared_ptr<Node> z) {
         y->color = z->color;
     }
 
-    if (yOriginalColor == BLACK) {
-        if (x) {
+    if (yOriginalColor == BLACK)
+    {
+        if (x)
+        {
             xParent = x->parent; // 更新 xParent 为 x 的父节点
-        } else {
+        }
+        else
+        {
             xParent = y->parent; // 如果 x 为空，xParent 就是 y 的父节点
         }
 
@@ -303,7 +328,8 @@ void RedBlackTree<KeyType, ValueType>::deleteFixup(std::shared_ptr<Node> x, std:
                 if (!w->right || w->right->color == BLACK)
                 {
                     // Case 3: 兄弟节点的右子节点是黑色，左子节点是红色
-                    if (w->left) w->left->color = BLACK;
+                    if (w->left)
+                        w->left->color = BLACK;
                     w->color = RED;
                     rightRotate(w);
                     w = parent->right;
@@ -311,7 +337,8 @@ void RedBlackTree<KeyType, ValueType>::deleteFixup(std::shared_ptr<Node> x, std:
                 // Case 4: 兄弟节点的右子节点是红色
                 w->color = parent->color;
                 parent->color = BLACK;
-                if (w->right) w->right->color = BLACK;
+                if (w->right)
+                    w->right->color = BLACK;
                 leftRotate(parent);
                 x = root;
             }
@@ -340,7 +367,8 @@ void RedBlackTree<KeyType, ValueType>::deleteFixup(std::shared_ptr<Node> x, std:
                 if (!w->left || w->left->color == BLACK)
                 {
                     // Case 3: 兄弟节点的左子节点是黑色，右子节点是红色
-                    if (w->right) w->right->color = BLACK;
+                    if (w->right)
+                        w->right->color = BLACK;
                     w->color = RED;
                     leftRotate(w);
                     w = parent->left;
@@ -348,17 +376,19 @@ void RedBlackTree<KeyType, ValueType>::deleteFixup(std::shared_ptr<Node> x, std:
                 // Case 4: 兄弟节点的左子节点是红色
                 w->color = parent->color;
                 parent->color = BLACK;
-                if (w->left) w->left->color = BLACK;
+                if (w->left)
+                    w->left->color = BLACK;
                 rightRotate(parent);
                 x = root;
             }
         }
     }
-    if (x) x->color = BLACK;
+    if (x)
+        x->color = BLACK;
 }
 
 template <typename KeyType, typename ValueType>
-std::vector<ValueType> RedBlackTree<KeyType, ValueType>::search(const KeyType& key) const
+std::vector<ValueType> RedBlackTree<KeyType, ValueType>::search(const KeyType &key) const
 {
     auto x = root;
     while (x)
@@ -379,12 +409,13 @@ void RedBlackTree<KeyType, ValueType>::printInOrder() const
 }
 
 template <typename KeyType, typename ValueType>
-void RedBlackTree<KeyType, ValueType>::printInOrderHelper(const std::shared_ptr<Node>& node) const
+void RedBlackTree<KeyType, ValueType>::printInOrderHelper(const std::shared_ptr<Node> &node) const
 {
-    if (!node) return;
+    if (!node)
+        return;
     printInOrderHelper(node->left); // 递归打印左子树
     std::cout << "Key: " << node->key << " | Values: ";
-    for (const auto& value : node->values)
+    for (const auto &value : node->values)
     {
         std::cout << value << " ";
     }
@@ -393,11 +424,12 @@ void RedBlackTree<KeyType, ValueType>::printInOrderHelper(const std::shared_ptr<
 }
 
 template <typename KeyType, typename ValueType>
-void RedBlackTree<KeyType, ValueType>::inOrderTraversalHelper(std::shared_ptr<Node> node, QList<QPair<KeyType, ValueType>>& result)
+void RedBlackTree<KeyType, ValueType>::inOrderTraversalHelper(std::shared_ptr<Node> node, QList<QPair<KeyType, ValueType>> &result)
 {
-    if (!node) return;
+    if (!node)
+        return;
     inOrderTraversalHelper(node->left, result); // 递归遍历左子树
-    for (const auto& value : node->values)
+    for (const auto &value : node->values)
     {
         result.append(qMakePair(node->key, value)); // 将键值对添加到结果列表
     }
@@ -405,7 +437,7 @@ void RedBlackTree<KeyType, ValueType>::inOrderTraversalHelper(std::shared_ptr<No
 }
 
 template <typename KeyType, typename ValueType>
-void RedBlackTree<KeyType, ValueType>::inOrderTraversal(QList<QPair<KeyType, ValueType>>& result)
+void RedBlackTree<KeyType, ValueType>::inOrderTraversal(QList<QPair<KeyType, ValueType>> &result)
 {
     inOrderTraversalHelper(root, result);
 }
@@ -414,16 +446,17 @@ template <typename KeyType, typename ValueType>
 void RedBlackTree<KeyType, ValueType>::clear()
 {
     clearHelper(root); // 递归释放节点
-    root = nullptr; // 设置根节点为空
+    root = nullptr;    // 设置根节点为空
 }
 
 template <typename KeyType, typename ValueType>
-void RedBlackTree<KeyType, ValueType>::clearHelper(std::shared_ptr<Node>& node)
+void RedBlackTree<KeyType, ValueType>::clearHelper(std::shared_ptr<Node> &node)
 {
-    if (!node) return; // 如果节点为空，直接返回
-    clearHelper(node->left); // 递归清空左子树
+    if (!node)
+        return;               // 如果节点为空，直接返回
+    clearHelper(node->left);  // 递归清空左子树
     clearHelper(node->right); // 递归清空右子树
-    node.reset(); // 释放当前节点
+    node.reset();             // 释放当前节点
 }
 
 template <typename KeyType, typename ValueType>
