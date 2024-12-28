@@ -232,11 +232,21 @@
     {
         "author": "11",
         "bookName": "11",
-        "borrowDate": "2024-12-10",
-        "borrower": "11",
-        "id": 29,
-        "isBorrowed": true,
+        "borrowDate": "",
+        "borrower": "",
+        "id": 31,
+        "isBorrowed": false,
         "isbn": "11",
-        "returnDate": "2024-12-24"
+        "returnDate": ""
+    },
+    {
+        "author": "1111",
+        "bookName": "1111",
+        "borrowDate": "",
+        "borrower": "",
+        "id": 32,
+        "isBorrowed": false,
+        "isbn": "1111",
+        "returnDate": ""
     }
 ]

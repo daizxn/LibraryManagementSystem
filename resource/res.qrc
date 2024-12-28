@@ -13,5 +13,4 @@
     <qresource prefix="/book">
         <file>book/bookInfo.json</file>
     </qresource>
-
 </RCC>

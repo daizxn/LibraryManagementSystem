@@ -22,7 +22,7 @@
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true">QWidget#toolBox QToolButton{
-	background:rgb(67,74,80); 
+	background:#0089ce; 
 	color:white;
 	height:55px;
 	font-size:16px;
@@ -30,10 +30,10 @@
 	padding-left:20px;
 }
 QWidget#toolBox QToolButton:hover{
-	background-color: rgb(113, 113, 113);
+	background-color: #0089ce;
 }
 QWidget#toolBox  {
-	background:rgb(67,74,80);
+	background:r#0089ce;
 }</string>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
